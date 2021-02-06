@@ -45,5 +45,18 @@ public class IPLAnalyserTest {
             e.printStackTrace();
         }
     }
+	
+	@Test
+    public void givenDataShouldReturnBatsmanWithTopStrickingRate() {
+        try {
+        	IPLAnalyser iplAnalyser = new IPLAnalyser();
+        	iplAnalyser.loadIPL2019FactsheetMostRuns(IPL2019_FACTSHEET_MOSTRUNSCSVPATH);
+            String sortedIPLData = iplAnalyser.getBatsmenWithTopStrickingRate();
+            IPL2019FactsheetMostRunsCSV[] iplMostRuns = new Gson().fromJson(sortedIPLData, IPL2019FactsheetMostRunsCSV[].class);
+            Assert.assertEquals("Ishant Sharma", iplMostRuns[0].player);
+        } catch (IPLAnalysisException e) {
+            e.printStackTrace();
+        }
+    }
 
 }
