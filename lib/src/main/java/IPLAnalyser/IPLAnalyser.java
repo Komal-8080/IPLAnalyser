@@ -152,7 +152,7 @@ public class IPLAnalyser {
 				throw new IPLAnalysisException("No data", IPLAnalysisException.ExceptionType.NO_DATA);
 			}
 			Comparator<IPL2019FactsheetMostWktsCSV> iplComparator = Comparator.comparing(census -> census.avg);
-			this.descendingSortForMostWkts(iplComparator);
+			this.SortForMostWkts(iplComparator);
 			String json = new Gson().toJson(wktsCSVList);
 			Gson gson = new GsonBuilder().create();
 			gson.toJson(wktsCSVList, writer);
@@ -168,7 +168,7 @@ public class IPLAnalyser {
 				throw new IPLAnalysisException("No data", IPLAnalysisException.ExceptionType.NO_DATA);
 			}
 			Comparator<IPL2019FactsheetMostWktsCSV> iplComparator = Comparator.comparing(census -> census.strikeRate);
-			this.descendingSortForMostWkts(iplComparator);
+			this.SortForMostWkts(iplComparator);
 			String json = new Gson().toJson(wktsCSVList);
 			Gson gson = new GsonBuilder().create();
 			gson.toJson(wktsCSVList, writer);
@@ -184,7 +184,7 @@ public class IPLAnalyser {
 				throw new IPLAnalysisException("No data", IPLAnalysisException.ExceptionType.NO_DATA);
 			}
 			Comparator<IPL2019FactsheetMostWktsCSV> iplComparator = Comparator.comparing(census -> census.economy);
-			this.descendingSortForMostWkts(iplComparator);
+			this.SortForMostWkts(iplComparator);
 			String json = new Gson().toJson(wktsCSVList);
 			Gson gson = new GsonBuilder().create();
 			gson.toJson(wktsCSVList, writer);
@@ -194,12 +194,12 @@ public class IPLAnalyser {
 		}
 	}
 
-	private void descendingSortForMostWkts(Comparator<IPL2019FactsheetMostWktsCSV> iplComparator) {
+	private void SortForMostWkts(Comparator<IPL2019FactsheetMostWktsCSV> iplComparator) {
 		for (int i = 0; i < wktsCSVList.size() - 1; i++) {
 			for (int j = 0; j < wktsCSVList.size() - i - 1; j++) {
 				IPL2019FactsheetMostWktsCSV ipl1 = wktsCSVList.get(j);
 				IPL2019FactsheetMostWktsCSV ipl2 = wktsCSVList.get(j + 1);
-				if (iplComparator.compare(ipl1, ipl2) < 0) {
+				if (iplComparator.compare(ipl1, ipl2) > 0) {
 					wktsCSVList.set(j, ipl2);
 					wktsCSVList.set(j + 1, ipl1);
 				}

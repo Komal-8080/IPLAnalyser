@@ -127,7 +127,7 @@ public class IPLAnalyserTest {
 			IPL2019FactsheetMostWktsCSV[] wktsCSVList = new Gson().fromJson(sortedIPLData,
 					IPL2019FactsheetMostWktsCSV[].class);
 			System.out.println(wktsCSVList[0].player);
-			Assert.assertEquals("Krishnappa Gowtham", wktsCSVList[0].player);
+			Assert.assertEquals("Shivam Dube", wktsCSVList[0].player);
 		} catch (IPLAnalysisException e) {
 			e.printStackTrace();
 		}
@@ -142,7 +142,7 @@ public class IPLAnalyserTest {
 			IPL2019FactsheetMostWktsCSV[] wktsCSVList = new Gson().fromJson(sortedIPLData,
 					IPL2019FactsheetMostWktsCSV[].class);
 			System.out.println(wktsCSVList[0].player);
-			Assert.assertEquals("Krishnappa Gowtham", wktsCSVList[0].player);
+			Assert.assertEquals("Shivam Dube", wktsCSVList[0].player);
 		} catch (IPLAnalysisException e) {
 			e.printStackTrace();
 		}
@@ -157,9 +157,10 @@ public class IPLAnalyserTest {
 			IPL2019FactsheetMostWktsCSV[] wktsCSVList = new Gson().fromJson(sortedIPLData,
 					IPL2019FactsheetMostWktsCSV[].class);
 			System.out.println(wktsCSVList[0].player);
-			Assert.assertEquals("Krishnappa Gowtham", wktsCSVList[0].player);
+			Assert.assertEquals("Shivam Dube", wktsCSVList[0].player);
 		} catch (IPLAnalysisException e) {
 			e.printStackTrace();
 		}
 	}
+	
 }
