@@ -80,6 +80,24 @@ public class IPLAnalyser {
 		}
 	}
 
+	public String getPlayersWithBestStrinkingRateWithTop6and4() throws IPLAnalysisException {
+		try (Writer writer = new FileWriter("./src/test/resources/IPLBestSRWithTop6sAnd4s.json")) {
+			if (runsCSVList == null || runsCSVList.size() == 0) {
+				throw new IPLAnalysisException("No data", IPLAnalysisException.ExceptionType.NO_DATA);
+			}
+			Comparator<IPL2019FactsheetMostRunsCSV> iplComparator = Comparator
+					.comparing(census -> census.fours + census.sixes);
+			this.descendingSort(iplComparator);
+			String json = new Gson().toJson(runsCSVList);
+			Gson gson = new GsonBuilder().create();
+			gson.toJson(runsCSVList, writer);
+			return json;
+
+		} catch (RuntimeException | IOException e) {
+			throw new IPLAnalysisException(e.getMessage(), IPLAnalysisException.ExceptionType.FILE_OR_HEADER_PROBLEM);
+		}
+	}
+
 	private void descendingSort(Comparator<IPL2019FactsheetMostRunsCSV> iplComparator) {
 		for (int i = 0; i < runsCSVList.size() - 1; i++) {
 			for (int j = 0; j < runsCSVList.size() - i - 1; j++) {

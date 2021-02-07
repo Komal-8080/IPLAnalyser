@@ -32,31 +32,47 @@ public class IPLAnalyserTest {
 			e.printStackTrace();
 		}
 	}
-	
+
 	@Test
-    public void givenDataShouldReturnTopBattingAverage() {
-        try {
-        	IPLAnalyser iplAnalyser = new IPLAnalyser();
-        	iplAnalyser.loadIPL2019FactsheetMostRuns(IPL2019_FACTSHEET_MOSTRUNSCSVPATH);
-            String sortedIPLData = iplAnalyser.getTopBatsmenAverages();
-            IPL2019FactsheetMostRunsCSV[] iplMostRuns = new Gson().fromJson(sortedIPLData, IPL2019FactsheetMostRunsCSV[].class);
-            Assert.assertEquals("MS Dhoni", iplMostRuns[0].player);
-        } catch (IPLAnalysisException e) {
-            e.printStackTrace();
-        }
-    }
-	
+	public void givenDataShouldReturnTopBattingAverageForMostRuns() {
+		try {
+			IPLAnalyser iplAnalyser = new IPLAnalyser();
+			iplAnalyser.loadIPL2019FactsheetMostRuns(IPL2019_FACTSHEET_MOSTRUNSCSVPATH);
+			String sortedIPLData = iplAnalyser.getTopBatsmenAverages();
+			IPL2019FactsheetMostRunsCSV[] iplMostRuns = new Gson().fromJson(sortedIPLData,
+					IPL2019FactsheetMostRunsCSV[].class);
+			Assert.assertEquals("MS Dhoni", iplMostRuns[0].player);
+		} catch (IPLAnalysisException e) {
+			e.printStackTrace();
+		}
+	}
+
 	@Test
-    public void givenDataShouldReturnBatsmanWithTopStrickingRate() {
-        try {
-        	IPLAnalyser iplAnalyser = new IPLAnalyser();
-        	iplAnalyser.loadIPL2019FactsheetMostRuns(IPL2019_FACTSHEET_MOSTRUNSCSVPATH);
-            String sortedIPLData = iplAnalyser.getBatsmenWithTopStrickingRate();
-            IPL2019FactsheetMostRunsCSV[] iplMostRuns = new Gson().fromJson(sortedIPLData, IPL2019FactsheetMostRunsCSV[].class);
-            Assert.assertEquals("Ishant Sharma", iplMostRuns[0].player);
-        } catch (IPLAnalysisException e) {
-            e.printStackTrace();
-        }
-    }
+	public void givenDataShouldReturnBatsmanWithTopStrickingRateForMostRuns() {
+		try {
+			IPLAnalyser iplAnalyser = new IPLAnalyser();
+			iplAnalyser.loadIPL2019FactsheetMostRuns(IPL2019_FACTSHEET_MOSTRUNSCSVPATH);
+			String sortedIPLData = iplAnalyser.getBatsmenWithTopStrickingRate();
+			IPL2019FactsheetMostRunsCSV[] iplMostRuns = new Gson().fromJson(sortedIPLData,
+					IPL2019FactsheetMostRunsCSV[].class);
+			Assert.assertEquals("Ishant Sharma", iplMostRuns[0].player);
+		} catch (IPLAnalysisException e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Test
+	public void givenDataShouldReturnBestStrinckingRateWith6sAnd4sForMostRuns() {
+		try {
+			IPLAnalyser iPLAnalyser = new IPLAnalyser();
+			iPLAnalyser.loadIPL2019FactsheetMostRuns(IPL2019_FACTSHEET_MOSTRUNSCSVPATH);
+			String sortedIPLData = iPLAnalyser.getPlayersWithBestStrinkingRateWithTop6and4();
+			IPL2019FactsheetMostRunsCSV[] iplMostRuns = new Gson().fromJson(sortedIPLData,
+					IPL2019FactsheetMostRunsCSV[].class);
+			Assert.assertEquals("Andre Russell", iplMostRuns[0].player);
+		} catch (IPLAnalysisException e) {
+			e.printStackTrace();
+		}
+	}
 
 }
