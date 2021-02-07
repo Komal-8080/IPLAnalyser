@@ -177,7 +177,7 @@ public class IPLAnalyser {
 			throw new IPLAnalysisException(e.getMessage(), IPLAnalysisException.ExceptionType.FILE_OR_HEADER_PROBLEM);
 		}
 	}
-	
+
 	public String getBowlersWithTopEconomyRate() throws IPLAnalysisException {
 		try (Writer writer = new FileWriter("./src/test/resources/IPLEconomyBowler.json")) {
 			if (wktsCSVList == null || wktsCSVList.size() == 0) {
@@ -199,7 +199,10 @@ public class IPLAnalyser {
 			if (wktsCSVList == null || wktsCSVList.size() == 0) {
 				throw new IPLAnalysisException("No data", IPLAnalysisException.ExceptionType.NO_DATA);
 			}
-			Comparator<IPL2019FactsheetMostWktsCSV> iplComparator = Comparator.comparing(IPL2019FactsheetMostWktsCSV::getFiveWicket).thenComparing(IPL2019FactsheetMostWktsCSV::getFourWicket).thenComparing(census -> census.strikeRate);
+			Comparator<IPL2019FactsheetMostWktsCSV> iplComparator = Comparator
+					.comparing(IPL2019FactsheetMostWktsCSV::getFiveWicket)
+					.thenComparing(IPL2019FactsheetMostWktsCSV::getFourWicket)
+					.thenComparing(census -> census.strikeRate);
 			this.SortForMostWkts(iplComparator);
 			String json = new Gson().toJson(wktsCSVList);
 			Gson gson = new GsonBuilder().create();
@@ -209,7 +212,25 @@ public class IPLAnalyser {
 			throw new IPLAnalysisException(e.getMessage(), IPLAnalysisException.ExceptionType.FILE_OR_HEADER_PROBLEM);
 		}
 	}
-	
+
+	public String getBowlersWithGreateAverageAndBestStrikeRate() throws IPLAnalysisException {
+		try (Writer writer = new FileWriter("./src/test/resources/IPLEconomyBowler.json")) {
+			if (wktsCSVList == null || wktsCSVList.size() == 0) {
+				throw new IPLAnalysisException("No data", IPLAnalysisException.ExceptionType.NO_DATA);
+			}
+			Comparator<IPL2019FactsheetMostWktsCSV> iplComparator = Comparator
+					.comparing(IPL2019FactsheetMostWktsCSV::getAvg)
+					.thenComparing(census -> census.strikeRate);
+			this.SortForMostWkts(iplComparator);
+			String json = new Gson().toJson(wktsCSVList);
+			Gson gson = new GsonBuilder().create();
+			gson.toJson(wktsCSVList, writer);
+			return json;
+		} catch (RuntimeException | IOException e) {
+			throw new IPLAnalysisException(e.getMessage(), IPLAnalysisException.ExceptionType.FILE_OR_HEADER_PROBLEM);
+		}
+	}
+
 	private void SortForMostWkts(Comparator<IPL2019FactsheetMostWktsCSV> iplComparator) {
 		for (int i = 0; i < wktsCSVList.size() - 1; i++) {
 			for (int j = 0; j < wktsCSVList.size() - i - 1; j++) {
@@ -235,5 +256,4 @@ public class IPLAnalyser {
 			}
 		}
 	}
-
 }

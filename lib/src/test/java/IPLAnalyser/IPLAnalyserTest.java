@@ -132,7 +132,7 @@ public class IPLAnalyserTest {
 			e.printStackTrace();
 		}
 	}
-	
+
 	@Test
 	public void givenDataShouldReturnBowlerWithTopEconomyRate() {
 		try {
@@ -147,7 +147,7 @@ public class IPLAnalyserTest {
 			e.printStackTrace();
 		}
 	}
-	
+
 	@Test
 	public void givenDataShouldReturnBowlerWithTopStrinkingRate() {
 		try {
@@ -177,6 +177,20 @@ public class IPLAnalyserTest {
 			e.printStackTrace();
 		}
 	}
-	
-	
+
+	@Test
+	public void givenDataShouldReturnBowlerWithGreateAverageAndBestStrikeRate() {
+		try {
+			IPLAnalyser iplAnalyser = new IPLAnalyser();
+			iplAnalyser.loadIPL2019FactsheetMostWkts(IPL2019_FACTSHEET_MOSTWKTSCSVPATH);
+			String sortedIPLData = iplAnalyser.getBowlersWithGreateAverageAndBestStrikeRate();
+			IPL2019FactsheetMostWktsCSV[] wktsCSVList = new Gson().fromJson(sortedIPLData,
+					IPL2019FactsheetMostWktsCSV[].class);
+			System.out.println(wktsCSVList[0].player);
+			Assert.assertEquals("Shivam Dube", wktsCSVList[0].player);
+		} catch (IPLAnalysisException e) {
+			e.printStackTrace();
+		}
+	}
+
 }
