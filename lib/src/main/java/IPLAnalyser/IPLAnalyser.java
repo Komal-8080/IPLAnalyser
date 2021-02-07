@@ -145,13 +145,29 @@ public class IPLAnalyser {
 			throw new IPLAnalysisException(e.getMessage(), IPLAnalysisException.ExceptionType.FILE_OR_HEADER_PROBLEM);
 		}
 	}
-	
+
 	public String getTopBowlingAverages() throws IPLAnalysisException {
 		try (Writer writer = new FileWriter("./src/test/resources/IPLTopBowlingAverages.json")) {
 			if (wktsCSVList == null || wktsCSVList.size() == 0) {
 				throw new IPLAnalysisException("No data", IPLAnalysisException.ExceptionType.NO_DATA);
 			}
 			Comparator<IPL2019FactsheetMostWktsCSV> iplComparator = Comparator.comparing(census -> census.avg);
+			this.descendingSortForMostWkts(iplComparator);
+			String json = new Gson().toJson(wktsCSVList);
+			Gson gson = new GsonBuilder().create();
+			gson.toJson(wktsCSVList, writer);
+			return json;
+		} catch (RuntimeException | IOException e) {
+			throw new IPLAnalysisException(e.getMessage(), IPLAnalysisException.ExceptionType.FILE_OR_HEADER_PROBLEM);
+		}
+	}
+
+	public String getBowlersWithTopStrikeingRate() throws IPLAnalysisException {
+		try (Writer writer = new FileWriter("./src/test/resources/IPLTopSRBowler.json")) {
+			if (wktsCSVList == null || wktsCSVList.size() == 0) {
+				throw new IPLAnalysisException("No data", IPLAnalysisException.ExceptionType.NO_DATA);
+			}
+			Comparator<IPL2019FactsheetMostWktsCSV> iplComparator = Comparator.comparing(census -> census.strikeRate);
 			this.descendingSortForMostWkts(iplComparator);
 			String json = new Gson().toJson(wktsCSVList);
 			Gson gson = new GsonBuilder().create();

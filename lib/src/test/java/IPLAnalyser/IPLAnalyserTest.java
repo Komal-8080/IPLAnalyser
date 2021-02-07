@@ -117,13 +117,28 @@ public class IPLAnalyserTest {
 			e.printStackTrace();
 		}
 	}
-	
+
 	@Test
 	public void givenDataShouldReturnTopBowlingAverageForMostWkts() {
 		try {
 			IPLAnalyser iplAnalyser = new IPLAnalyser();
 			iplAnalyser.loadIPL2019FactsheetMostWkts(IPL2019_FACTSHEET_MOSTWKTSCSVPATH);
 			String sortedIPLData = iplAnalyser.getTopBowlingAverages();
+			IPL2019FactsheetMostWktsCSV[] wktsCSVList = new Gson().fromJson(sortedIPLData,
+					IPL2019FactsheetMostWktsCSV[].class);
+			System.out.println(wktsCSVList[0].player);
+			Assert.assertEquals("Krishnappa Gowtham", wktsCSVList[0].player);
+		} catch (IPLAnalysisException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	@Test
+	public void givenDataShouldReturnBowlerWithTopStrinkingRate() {
+		try {
+			IPLAnalyser iplAnalyser = new IPLAnalyser();
+			iplAnalyser.loadIPL2019FactsheetMostWkts(IPL2019_FACTSHEET_MOSTWKTSCSVPATH);
+			String sortedIPLData = iplAnalyser.getBowlersWithTopStrikeingRate();
 			IPL2019FactsheetMostWktsCSV[] wktsCSVList = new Gson().fromJson(sortedIPLData,
 					IPL2019FactsheetMostWktsCSV[].class);
 			System.out.println(wktsCSVList[0].player);
