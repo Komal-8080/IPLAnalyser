@@ -231,12 +231,43 @@ public class IPLAnalyser {
 		}
 	}
 
+	public String getBowlersWithMaximumWicketsAndGreateAverage() throws IPLAnalysisException {
+		try (Writer writer = new FileWriter("./src/test/resources/IPLEconomyBowler.json")) {
+			if (wktsCSVList == null || wktsCSVList.size() == 0) {
+				throw new IPLAnalysisException("No data", IPLAnalysisException.ExceptionType.NO_DATA);
+			}
+			Comparator<IPL2019FactsheetMostWktsCSV> iplComparator = Comparator
+					.comparing(IPL2019FactsheetMostWktsCSV::getWickets)
+					.thenComparing(IPL2019FactsheetMostWktsCSV::getAvg);
+			this.decendingSortForMostWkts(iplComparator);
+			String json = new Gson().toJson(wktsCSVList);
+			Gson gson = new GsonBuilder().create();
+			gson.toJson(wktsCSVList, writer);
+			return json;
+		} catch (RuntimeException | IOException e) {
+			throw new IPLAnalysisException(e.getMessage(), IPLAnalysisException.ExceptionType.FILE_OR_HEADER_PROBLEM);
+		}
+	}
+	
 	private void SortForMostWkts(Comparator<IPL2019FactsheetMostWktsCSV> iplComparator) {
 		for (int i = 0; i < wktsCSVList.size() - 1; i++) {
 			for (int j = 0; j < wktsCSVList.size() - i - 1; j++) {
 				IPL2019FactsheetMostWktsCSV ipl1 = wktsCSVList.get(j);
 				IPL2019FactsheetMostWktsCSV ipl2 = wktsCSVList.get(j + 1);
 				if (iplComparator.compare(ipl1, ipl2) > 0) {
+					wktsCSVList.set(j, ipl2);
+					wktsCSVList.set(j + 1, ipl1);
+				}
+			}
+		}
+	}
+	
+	private void decendingSortForMostWkts(Comparator<IPL2019FactsheetMostWktsCSV> iplComparator) {
+		for (int i = 0; i < wktsCSVList.size() - 1; i++) {
+			for (int j = 0; j < wktsCSVList.size() - i - 1; j++) {
+				IPL2019FactsheetMostWktsCSV ipl1 = wktsCSVList.get(j);
+				IPL2019FactsheetMostWktsCSV ipl2 = wktsCSVList.get(j + 1);
+				if (iplComparator.compare(ipl1, ipl2) < 0) {
 					wktsCSVList.set(j, ipl2);
 					wktsCSVList.set(j + 1, ipl1);
 				}
@@ -256,4 +287,6 @@ public class IPLAnalyser {
 			}
 		}
 	}
+
+	
 }
