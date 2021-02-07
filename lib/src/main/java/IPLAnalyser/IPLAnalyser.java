@@ -80,7 +80,7 @@ public class IPLAnalyser {
 		}
 	}
 
-	public String getPlayersWithBestStrinkingRateWithTop6and4() throws IPLAnalysisException {
+	public String getPlayersWithMaximum6and4() throws IPLAnalysisException {
 		try (Writer writer = new FileWriter("./src/test/resources/IPLBestSRWithTop6sAnd4s.json")) {
 			if (runsCSVList == null || runsCSVList.size() == 0) {
 				throw new IPLAnalysisException("No data", IPLAnalysisException.ExceptionType.NO_DATA);

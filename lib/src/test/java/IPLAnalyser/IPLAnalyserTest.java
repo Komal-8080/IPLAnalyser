@@ -62,11 +62,11 @@ public class IPLAnalyserTest {
 	}
 
 	@Test
-	public void givenDataShouldReturnBestStrinckingRateWith6sAnd4sForMostRuns() {
+	public void givenDataShouldReturnCricketerWithMaximum6sAnd4sForMostRuns() {
 		try {
 			IPLAnalyser iPLAnalyser = new IPLAnalyser();
 			iPLAnalyser.loadIPL2019FactsheetMostRuns(IPL2019_FACTSHEET_MOSTRUNSCSVPATH);
-			String sortedIPLData = iPLAnalyser.getPlayersWithBestStrinkingRateWithTop6and4();
+			String sortedIPLData = iPLAnalyser.getPlayersWithMaximum6and4();
 			IPL2019FactsheetMostRunsCSV[] iplMostRuns = new Gson().fromJson(sortedIPLData,
 					IPL2019FactsheetMostRunsCSV[].class);
 			Assert.assertEquals("Andre Russell", iplMostRuns[0].player);
