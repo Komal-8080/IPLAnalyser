@@ -50,7 +50,7 @@ public class IPLAnalyser {
 				throw new IPLAnalysisException("No data", IPLAnalysisException.ExceptionType.NO_DATA);
 			}
 			Comparator<IPL2019FactsheetMostRunsCSV> iplComparator = Comparator.comparing(census -> census.avg);
-			this.descendingSortForMostRuns(iplComparator);
+			this.SortForMostRuns(iplComparator);
 			String json = new Gson().toJson(runsCSVList);
 			Gson gson = new GsonBuilder().create();
 			gson.toJson(runsCSVList, writer);
@@ -66,7 +66,7 @@ public class IPLAnalyser {
 				throw new IPLAnalysisException("No data", IPLAnalysisException.ExceptionType.NO_DATA);
 			}
 			Comparator<IPL2019FactsheetMostRunsCSV> iplComparator = Comparator.comparing(census -> census.strikeRate);
-			this.descendingSortForMostRuns(iplComparator);
+			this.SortForMostRuns(iplComparator);
 			String json = new Gson().toJson(runsCSVList);
 			Gson gson = new GsonBuilder().create();
 			gson.toJson(runsCSVList, writer);
@@ -83,7 +83,7 @@ public class IPLAnalyser {
 			}
 			Comparator<IPL2019FactsheetMostRunsCSV> iplComparator = Comparator
 					.comparing(census -> census.fours + census.sixes);
-			this.descendingSortForMostRuns(iplComparator);
+			this.SortForMostRuns(iplComparator);
 			String json = new Gson().toJson(runsCSVList);
 			Gson gson = new GsonBuilder().create();
 			gson.toJson(runsCSVList, writer);
@@ -101,7 +101,7 @@ public class IPLAnalyser {
 			Comparator<IPL2019FactsheetMostRunsCSV> iplComparator = Comparator
 					.comparing(IPL2019FactsheetMostRunsCSV::getSixes).thenComparing(ipl -> ipl.fours)
 					.thenComparing(census -> census.strikeRate);
-			this.descendingSortForMostRuns(iplComparator);
+			this.SortForMostRuns(iplComparator);
 			String json = new Gson().toJson(runsCSVList);
 			Gson gson = new GsonBuilder().create();
 			gson.toJson(runsCSVList, writer);
@@ -119,7 +119,7 @@ public class IPLAnalyser {
 			}
 			Comparator<IPL2019FactsheetMostRunsCSV> iplComparator = Comparator
 					.comparing(IPL2019FactsheetMostRunsCSV::getAvg).thenComparing(census -> census.strikeRate);
-			this.descendingSortForMostRuns(iplComparator);
+			this.SortForMostRuns(iplComparator);
 			String json = new Gson().toJson(runsCSVList);
 			Gson gson = new GsonBuilder().create();
 			gson.toJson(runsCSVList, writer);
@@ -136,7 +136,7 @@ public class IPLAnalyser {
 			}
 			Comparator<IPL2019FactsheetMostRunsCSV> iplComparator = Comparator
 					.comparing(IPL2019FactsheetMostRunsCSV::getRuns).thenComparing(census -> census.avg);
-			this.descendingSortForMostRuns(iplComparator);
+			this.SortForMostRuns(iplComparator);
 			String json = new Gson().toJson(runsCSVList);
 			Gson gson = new GsonBuilder().create();
 			gson.toJson(runsCSVList, writer);
@@ -179,7 +179,7 @@ public class IPLAnalyser {
 	}
 	
 	public String getBowlersWithTopEconomyRate() throws IPLAnalysisException {
-		try (Writer writer = new FileWriter("./src/test/resources/IPLTopEconomyBowler.json")) {
+		try (Writer writer = new FileWriter("./src/test/resources/IPLEconomyBowler.json")) {
 			if (wktsCSVList == null || wktsCSVList.size() == 0) {
 				throw new IPLAnalysisException("No data", IPLAnalysisException.ExceptionType.NO_DATA);
 			}
@@ -194,6 +194,22 @@ public class IPLAnalyser {
 		}
 	}
 
+	public String getBowlersWithBestStrikeRateAndWith5WAnd4W() throws IPLAnalysisException {
+		try (Writer writer = new FileWriter("./src/test/resources/IPLEconomyBowler.json")) {
+			if (wktsCSVList == null || wktsCSVList.size() == 0) {
+				throw new IPLAnalysisException("No data", IPLAnalysisException.ExceptionType.NO_DATA);
+			}
+			Comparator<IPL2019FactsheetMostWktsCSV> iplComparator = Comparator.comparing(IPL2019FactsheetMostWktsCSV::getFiveWicket).thenComparing(IPL2019FactsheetMostWktsCSV::getFourWicket).thenComparing(census -> census.strikeRate);
+			this.SortForMostWkts(iplComparator);
+			String json = new Gson().toJson(wktsCSVList);
+			Gson gson = new GsonBuilder().create();
+			gson.toJson(wktsCSVList, writer);
+			return json;
+		} catch (RuntimeException | IOException e) {
+			throw new IPLAnalysisException(e.getMessage(), IPLAnalysisException.ExceptionType.FILE_OR_HEADER_PROBLEM);
+		}
+	}
+	
 	private void SortForMostWkts(Comparator<IPL2019FactsheetMostWktsCSV> iplComparator) {
 		for (int i = 0; i < wktsCSVList.size() - 1; i++) {
 			for (int j = 0; j < wktsCSVList.size() - i - 1; j++) {
@@ -207,7 +223,7 @@ public class IPLAnalyser {
 		}
 	}
 
-	private void descendingSortForMostRuns(Comparator<IPL2019FactsheetMostRunsCSV> iplComparator) {
+	private void SortForMostRuns(Comparator<IPL2019FactsheetMostRunsCSV> iplComparator) {
 		for (int i = 0; i < runsCSVList.size() - 1; i++) {
 			for (int j = 0; j < runsCSVList.size() - i - 1; j++) {
 				IPL2019FactsheetMostRunsCSV ipl1 = runsCSVList.get(j);
