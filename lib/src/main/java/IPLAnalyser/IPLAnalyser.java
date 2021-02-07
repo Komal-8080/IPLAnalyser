@@ -50,7 +50,7 @@ public class IPLAnalyser {
 				throw new IPLAnalysisException("No data", IPLAnalysisException.ExceptionType.NO_DATA);
 			}
 			Comparator<IPL2019FactsheetMostRunsCSV> iplComparator = Comparator.comparing(census -> census.avg);
-			this.descendingSort(iplComparator);
+			this.descendingSortForMostRuns(iplComparator);
 			String json = new Gson().toJson(runsCSVList);
 			Gson gson = new GsonBuilder().create();
 			gson.toJson(runsCSVList, writer);
@@ -66,7 +66,7 @@ public class IPLAnalyser {
 				throw new IPLAnalysisException("No data", IPLAnalysisException.ExceptionType.NO_DATA);
 			}
 			Comparator<IPL2019FactsheetMostRunsCSV> iplComparator = Comparator.comparing(census -> census.strikeRate);
-			this.descendingSort(iplComparator);
+			this.descendingSortForMostRuns(iplComparator);
 			String json = new Gson().toJson(runsCSVList);
 			Gson gson = new GsonBuilder().create();
 			gson.toJson(runsCSVList, writer);
@@ -83,7 +83,7 @@ public class IPLAnalyser {
 			}
 			Comparator<IPL2019FactsheetMostRunsCSV> iplComparator = Comparator
 					.comparing(census -> census.fours + census.sixes);
-			this.descendingSort(iplComparator);
+			this.descendingSortForMostRuns(iplComparator);
 			String json = new Gson().toJson(runsCSVList);
 			Gson gson = new GsonBuilder().create();
 			gson.toJson(runsCSVList, writer);
@@ -101,7 +101,7 @@ public class IPLAnalyser {
 			Comparator<IPL2019FactsheetMostRunsCSV> iplComparator = Comparator
 					.comparing(IPL2019FactsheetMostRunsCSV::getSixes).thenComparing(ipl -> ipl.fours)
 					.thenComparing(census -> census.strikeRate);
-			this.descendingSort(iplComparator);
+			this.descendingSortForMostRuns(iplComparator);
 			String json = new Gson().toJson(runsCSVList);
 			Gson gson = new GsonBuilder().create();
 			gson.toJson(runsCSVList, writer);
@@ -119,7 +119,7 @@ public class IPLAnalyser {
 			}
 			Comparator<IPL2019FactsheetMostRunsCSV> iplComparator = Comparator
 					.comparing(IPL2019FactsheetMostRunsCSV::getAvg).thenComparing(census -> census.strikeRate);
-			this.descendingSort(iplComparator);
+			this.descendingSortForMostRuns(iplComparator);
 			String json = new Gson().toJson(runsCSVList);
 			Gson gson = new GsonBuilder().create();
 			gson.toJson(runsCSVList, writer);
@@ -136,7 +136,7 @@ public class IPLAnalyser {
 			}
 			Comparator<IPL2019FactsheetMostRunsCSV> iplComparator = Comparator
 					.comparing(IPL2019FactsheetMostRunsCSV::getRuns).thenComparing(census -> census.avg);
-			this.descendingSort(iplComparator);
+			this.descendingSortForMostRuns(iplComparator);
 			String json = new Gson().toJson(runsCSVList);
 			Gson gson = new GsonBuilder().create();
 			gson.toJson(runsCSVList, writer);
@@ -145,8 +145,37 @@ public class IPLAnalyser {
 			throw new IPLAnalysisException(e.getMessage(), IPLAnalysisException.ExceptionType.FILE_OR_HEADER_PROBLEM);
 		}
 	}
+	
+	public String getTopBowlingAverages() throws IPLAnalysisException {
+		try (Writer writer = new FileWriter("./src/test/resources/IPLTopBowlingAverages.json")) {
+			if (wktsCSVList == null || wktsCSVList.size() == 0) {
+				throw new IPLAnalysisException("No data", IPLAnalysisException.ExceptionType.NO_DATA);
+			}
+			Comparator<IPL2019FactsheetMostWktsCSV> iplComparator = Comparator.comparing(census -> census.avg);
+			this.descendingSortForMostWkts(iplComparator);
+			String json = new Gson().toJson(wktsCSVList);
+			Gson gson = new GsonBuilder().create();
+			gson.toJson(wktsCSVList, writer);
+			return json;
+		} catch (RuntimeException | IOException e) {
+			throw new IPLAnalysisException(e.getMessage(), IPLAnalysisException.ExceptionType.FILE_OR_HEADER_PROBLEM);
+		}
+	}
 
-	private void descendingSort(Comparator<IPL2019FactsheetMostRunsCSV> iplComparator) {
+	private void descendingSortForMostWkts(Comparator<IPL2019FactsheetMostWktsCSV> iplComparator) {
+		for (int i = 0; i < wktsCSVList.size() - 1; i++) {
+			for (int j = 0; j < wktsCSVList.size() - i - 1; j++) {
+				IPL2019FactsheetMostWktsCSV ipl1 = wktsCSVList.get(j);
+				IPL2019FactsheetMostWktsCSV ipl2 = wktsCSVList.get(j + 1);
+				if (iplComparator.compare(ipl1, ipl2) < 0) {
+					wktsCSVList.set(j, ipl2);
+					wktsCSVList.set(j + 1, ipl1);
+				}
+			}
+		}
+	}
+
+	private void descendingSortForMostRuns(Comparator<IPL2019FactsheetMostRunsCSV> iplComparator) {
 		for (int i = 0; i < runsCSVList.size() - 1; i++) {
 			for (int j = 0; j < runsCSVList.size() - i - 1; j++) {
 				IPL2019FactsheetMostRunsCSV ipl1 = runsCSVList.get(j);
