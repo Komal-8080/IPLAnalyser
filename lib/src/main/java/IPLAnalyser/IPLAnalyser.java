@@ -77,7 +77,7 @@ public class IPLAnalyser {
 	}
 
 	public String getPlayersWithMaximum6and4() throws IPLAnalysisException {
-		try (Writer writer = new FileWriter("./src/test/resources/IPLBestSRWithTop6sAnd4s.json")) {
+		try (Writer writer = new FileWriter("./src/test/resources/IPLPlayerWithTop6sAnd4s.json")) {
 			if (runsCSVList == null || runsCSVList.size() == 0) {
 				throw new IPLAnalysisException("No data", IPLAnalysisException.ExceptionType.NO_DATA);
 			}
@@ -99,7 +99,26 @@ public class IPLAnalyser {
 				throw new IPLAnalysisException("No data", IPLAnalysisException.ExceptionType.NO_DATA);
 			}
 			Comparator<IPL2019FactsheetMostRunsCSV> iplComparator = Comparator
-					.comparing(IPL2019FactsheetMostRunsCSV::getSixes).thenComparing(ipl -> ipl.fours).thenComparing(census -> census.strikeRate);
+					.comparing(IPL2019FactsheetMostRunsCSV::getSixes).thenComparing(ipl -> ipl.fours)
+					.thenComparing(census -> census.strikeRate);
+			this.descendingSort(iplComparator);
+			String json = new Gson().toJson(runsCSVList);
+			Gson gson = new GsonBuilder().create();
+			gson.toJson(runsCSVList, writer);
+			return json;
+		} catch (RuntimeException | IOException e) {
+			throw new IPLAnalysisException(e.getMessage(), IPLAnalysisException.ExceptionType.FILE_OR_HEADER_PROBLEM);
+		}
+	}
+
+	public String getCricketerWithHighestAvgeragesAndBestStrickingRate() throws IPLAnalysisException {
+		try (Writer writer = new FileWriter(
+				"./src/test/resources/IPLPlayerWithHighestAveragesAndBestStrikeingRates.json")) {
+			if (runsCSVList == null || runsCSVList.size() == 0) {
+				throw new IPLAnalysisException("No data", IPLAnalysisException.ExceptionType.NO_DATA);
+			}
+			Comparator<IPL2019FactsheetMostRunsCSV> iplComparator = Comparator
+					.comparing(IPL2019FactsheetMostRunsCSV::getAvg).thenComparing(census -> census.strikeRate);
 			this.descendingSort(iplComparator);
 			String json = new Gson().toJson(runsCSVList);
 			Gson gson = new GsonBuilder().create();
