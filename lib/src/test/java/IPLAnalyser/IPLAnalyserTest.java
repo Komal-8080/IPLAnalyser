@@ -75,4 +75,17 @@ public class IPLAnalyserTest {
 		}
 	}
 
+	@Test
+	public void givenDataShouldReturnCricketerWithBestStrikeingRateAndMaximum6sAnd4sForMostRuns() {
+		try {
+			IPLAnalyser iPLAnalyser = new IPLAnalyser();
+			iPLAnalyser.loadIPL2019FactsheetMostRuns(IPL2019_FACTSHEET_MOSTRUNSCSVPATH);
+			String sortedIPLData = iPLAnalyser.getPlayersWithBestStrikeingRateAndMaximum6and4();
+			IPL2019FactsheetMostRunsCSV[] iplMostRuns = new Gson().fromJson(sortedIPLData,
+					IPL2019FactsheetMostRunsCSV[].class);
+			Assert.assertEquals("Andre Russell", iplMostRuns[0].player);
+		} catch (IPLAnalysisException e) {
+			e.printStackTrace();
+		}
+	}
 }

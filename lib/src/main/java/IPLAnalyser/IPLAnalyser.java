@@ -26,7 +26,6 @@ public class IPLAnalyser {
 		try (Reader reader = Files.newBufferedReader(Paths.get(csvFilePath));) {
 			runsCSVList = CSVBuilderFactory.createCSVBuilder().getCSVFList(reader, IPL2019FactsheetMostRunsCSV.class);
 			return runsCSVList.size();
-
 		} catch (IOException | CSVBuilderException e) {
 			throw new IPLAnalysisException(e.getMessage(), IPLAnalysisException.ExceptionType.IPL_FILE_PROBLEM);
 		} catch (RuntimeException e) {
@@ -38,7 +37,6 @@ public class IPLAnalyser {
 		try (Reader reader = Files.newBufferedReader(Paths.get(csvFilePath));) {
 			wktsCSVList = CSVBuilderFactory.createCSVBuilder().getCSVFList(reader, IPL2019FactsheetMostWktsCSV.class);
 			return wktsCSVList.size();
-
 		} catch (IOException | CSVBuilderException e) {
 			throw new IPLAnalysisException(e.getMessage(), IPLAnalysisException.ExceptionType.IPL_FILE_PROBLEM);
 		} catch (RuntimeException e) {
@@ -57,7 +55,6 @@ public class IPLAnalyser {
 			Gson gson = new GsonBuilder().create();
 			gson.toJson(runsCSVList, writer);
 			return json;
-
 		} catch (RuntimeException | IOException e) {
 			throw new IPLAnalysisException(e.getMessage(), IPLAnalysisException.ExceptionType.FILE_OR_HEADER_PROBLEM);
 		}
@@ -74,7 +71,6 @@ public class IPLAnalyser {
 			Gson gson = new GsonBuilder().create();
 			gson.toJson(runsCSVList, writer);
 			return json;
-
 		} catch (RuntimeException | IOException e) {
 			throw new IPLAnalysisException(e.getMessage(), IPLAnalysisException.ExceptionType.FILE_OR_HEADER_PROBLEM);
 		}
@@ -92,7 +88,23 @@ public class IPLAnalyser {
 			Gson gson = new GsonBuilder().create();
 			gson.toJson(runsCSVList, writer);
 			return json;
+		} catch (RuntimeException | IOException e) {
+			throw new IPLAnalysisException(e.getMessage(), IPLAnalysisException.ExceptionType.FILE_OR_HEADER_PROBLEM);
+		}
+	}
 
+	public String getPlayersWithBestStrikeingRateAndMaximum6and4() throws IPLAnalysisException {
+		try (Writer writer = new FileWriter("./src/test/resources/IPLBestSRWithTop6sAnd4s.json")) {
+			if (runsCSVList == null || runsCSVList.size() == 0) {
+				throw new IPLAnalysisException("No data", IPLAnalysisException.ExceptionType.NO_DATA);
+			}
+			Comparator<IPL2019FactsheetMostRunsCSV> iplComparator = Comparator
+					.comparing(IPL2019FactsheetMostRunsCSV::getSixes).thenComparing(ipl -> ipl.fours).thenComparing(census -> census.strikeRate);
+			this.descendingSort(iplComparator);
+			String json = new Gson().toJson(runsCSVList);
+			Gson gson = new GsonBuilder().create();
+			gson.toJson(runsCSVList, writer);
+			return json;
 		} catch (RuntimeException | IOException e) {
 			throw new IPLAnalysisException(e.getMessage(), IPLAnalysisException.ExceptionType.FILE_OR_HEADER_PROBLEM);
 		}
