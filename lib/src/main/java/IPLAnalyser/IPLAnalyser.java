@@ -219,8 +219,7 @@ public class IPLAnalyser {
 				throw new IPLAnalysisException("No data", IPLAnalysisException.ExceptionType.NO_DATA);
 			}
 			Comparator<IPL2019FactsheetMostWktsCSV> iplComparator = Comparator
-					.comparing(IPL2019FactsheetMostWktsCSV::getAvg)
-					.thenComparing(census -> census.strikeRate);
+					.comparing(IPL2019FactsheetMostWktsCSV::getAvg).thenComparing(census -> census.strikeRate);
 			this.SortForMostWkts(iplComparator);
 			String json = new Gson().toJson(wktsCSVList);
 			Gson gson = new GsonBuilder().create();
@@ -248,7 +247,7 @@ public class IPLAnalyser {
 			throw new IPLAnalysisException(e.getMessage(), IPLAnalysisException.ExceptionType.FILE_OR_HEADER_PROBLEM);
 		}
 	}
-	
+
 	private void SortForMostWkts(Comparator<IPL2019FactsheetMostWktsCSV> iplComparator) {
 		for (int i = 0; i < wktsCSVList.size() - 1; i++) {
 			for (int j = 0; j < wktsCSVList.size() - i - 1; j++) {
@@ -261,7 +260,7 @@ public class IPLAnalyser {
 			}
 		}
 	}
-	
+
 	private void decendingSortForMostWkts(Comparator<IPL2019FactsheetMostWktsCSV> iplComparator) {
 		for (int i = 0; i < wktsCSVList.size() - 1; i++) {
 			for (int j = 0; j < wktsCSVList.size() - i - 1; j++) {
@@ -287,6 +286,24 @@ public class IPLAnalyser {
 			}
 		}
 	}
-
 	
+	public int getPlayer(IPL2019FactsheetMostWktsCSV[] iplMostWkts) {
+		for (int index=0; index<iplMostWkts.length; index++) {
+			if(iplMostWkts[index].avg !=0 || iplMostWkts[index].strikeRate != 0) {
+				return index;
+			}
+		}
+		return 0;		
+	}
+
+	public String getpalyerWithTopBattingAndBowlingAverages(IPL2019FactsheetMostRunsCSV[] iplMostRuns,
+			IPL2019FactsheetMostWktsCSV[] iplMostWkts) {
+		for (int i = 0; i < iplMostRuns.length; i++) {
+			if (iplMostRuns[i].player.equals(iplMostWkts[i].player)) {
+				return iplMostRuns[i].player;
+			}
+		}
+		return null;
+	}
+
 }
