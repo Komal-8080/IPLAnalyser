@@ -217,19 +217,39 @@ public class IPLAnalyserTest {
 	@Test
 	public void givenDataShouldReturnBestBowlingAndBattingAverages() {
 		try {
-		IPLAnalyser iplAnalyser = new IPLAnalyser();
-		iplAnalyser.loadIPL2019FactsheetMostRuns(IPL2019_FACTSHEET_MOSTRUNSCSVPATH);
-		String sortedIPLDataBatting = iplAnalyser.getTopBatsmenAverages();
-		IPL2019FactsheetMostRunsCSV[] iplMostRuns = new Gson().fromJson(sortedIPLDataBatting,
-				IPL2019FactsheetMostRunsCSV[].class);
-		iplAnalyser.loadIPL2019FactsheetMostWkts(IPL2019_FACTSHEET_MOSTWKTSCSVPATH);
-		String sortedIPLDataBowling = iplAnalyser.getTopBowlingAverages();
-		IPL2019FactsheetMostWktsCSV[] iplMostWkts = new Gson().fromJson(sortedIPLDataBowling,
-				IPL2019FactsheetMostWktsCSV[].class);
-		String sortedIplData = iplAnalyser.getpalyerWithTopBattingAndBowlingAverages(iplMostRuns, iplMostWkts );
-		Assert.assertEquals("Umesh Yadav",sortedIplData );
-	}catch (IPLAnalysisException e) {
-		e.printStackTrace();
-	}}
+			IPLAnalyser iplAnalyser = new IPLAnalyser();
+			iplAnalyser.loadIPL2019FactsheetMostRuns(IPL2019_FACTSHEET_MOSTRUNSCSVPATH);
+			String sortedIPLDataBatting = iplAnalyser.getTopBatsmenAverages();
+			IPL2019FactsheetMostRunsCSV[] iplMostRuns = new Gson().fromJson(sortedIPLDataBatting,
+					IPL2019FactsheetMostRunsCSV[].class);
+			iplAnalyser.loadIPL2019FactsheetMostWkts(IPL2019_FACTSHEET_MOSTWKTSCSVPATH);
+			String sortedIPLDataBowling = iplAnalyser.getTopBowlingAverages();
+			IPL2019FactsheetMostWktsCSV[] iplMostWkts = new Gson().fromJson(sortedIPLDataBowling,
+					IPL2019FactsheetMostWktsCSV[].class);
+			String sortedIplData = iplAnalyser.getpalyerWithTopBattingAndBowlingAverages(iplMostRuns, iplMostWkts);
+			Assert.assertEquals("Umesh Yadav", sortedIplData);
+		} catch (IPLAnalysisException e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Test
+	public void givenDataShouldReturnBestAllRounder() {
+		try {
+			IPLAnalyser iplAnalyser = new IPLAnalyser();
+			iplAnalyser.loadIPL2019FactsheetMostRuns(IPL2019_FACTSHEET_MOSTRUNSCSVPATH);
+			String sortedIPLDataBatting = iplAnalyser.getCricketerWithHighestAvgeragesAndMaximumRuns();
+			IPL2019FactsheetMostRunsCSV[] iplMostRuns = new Gson().fromJson(sortedIPLDataBatting,
+					IPL2019FactsheetMostRunsCSV[].class);
+			iplAnalyser.loadIPL2019FactsheetMostWkts(IPL2019_FACTSHEET_MOSTWKTSCSVPATH);
+			String sortedIPLDataBowling = iplAnalyser.getBowlersWithMaximumWicketsAndGreateAverage();
+			IPL2019FactsheetMostWktsCSV[] iplMostWkts = new Gson().fromJson(sortedIPLDataBowling,
+					IPL2019FactsheetMostWktsCSV[].class);
+			String sortedIplData = iplAnalyser.getBestAllRounder(iplMostRuns, iplMostWkts);
+			Assert.assertEquals("Andre Russell", sortedIplData);
+		} catch (IPLAnalysisException e) {
+			e.printStackTrace();
+		}
+	}
 
 }

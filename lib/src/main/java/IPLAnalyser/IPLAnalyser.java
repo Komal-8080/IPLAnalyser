@@ -286,14 +286,14 @@ public class IPLAnalyser {
 			}
 		}
 	}
-	
+
 	public int getPlayer(IPL2019FactsheetMostWktsCSV[] iplMostWkts) {
-		for (int index=0; index<iplMostWkts.length; index++) {
-			if(iplMostWkts[index].avg !=0 || iplMostWkts[index].strikeRate != 0) {
+		for (int index = 0; index < iplMostWkts.length; index++) {
+			if (iplMostWkts[index].avg != 0 || iplMostWkts[index].strikeRate != 0) {
 				return index;
 			}
 		}
-		return 0;		
+		return 0;
 	}
 
 	public String getpalyerWithTopBattingAndBowlingAverages(IPL2019FactsheetMostRunsCSV[] iplMostRuns,
@@ -302,6 +302,17 @@ public class IPLAnalyser {
 			if (iplMostRuns[i].player.equals(iplMostWkts[i].player)) {
 				return iplMostRuns[i].player;
 			}
+		}
+		return null;
+	}
+
+	public String getBestAllRounder(IPL2019FactsheetMostRunsCSV[] iplMostRuns,
+			IPL2019FactsheetMostWktsCSV[] iplMostWkts) {
+		for (int i = 0; i < iplMostRuns.length; i++) {
+			for (int j = iplMostWkts.length - 1; j >= 0; j--)
+				if (iplMostRuns[i].player.equals(iplMostWkts[j].player)) {
+					return iplMostRuns[i].player;
+				}
 		}
 		return null;
 	}
