@@ -255,13 +255,32 @@ public class IPLAnalyserTest {
 	@Test
 	public void givenDataShouldReturnCricketerWithMaximumHundredsAndBestAverages() {
 		try {
-			IPLAnalyser iPLAnalyser = new IPLAnalyser();
-			iPLAnalyser.loadIPL2019FactsheetMostRuns(IPL2019_FACTSHEET_MOSTRUNSCSVPATH);
-			String sortedIPLData = iPLAnalyser.getCricketerWithMaximumHundredsAndBestAverages();
+			IPLAnalyser iplAnalyser = new IPLAnalyser();
+			iplAnalyser.loadIPL2019FactsheetMostRuns(IPL2019_FACTSHEET_MOSTRUNSCSVPATH);
+			String sortedIPLData = iplAnalyser.getCricketerWithMaximumHundredsAndBestAverages();
 			IPL2019FactsheetMostRunsCSV[] iplMostRuns = new Gson().fromJson(sortedIPLData,
 					IPL2019FactsheetMostRunsCSV[].class);
 			System.out.println(iplMostRuns[0].player);
 			Assert.assertEquals("David Warner ", iplMostRuns[0].player);
+		} catch (IPLAnalysisException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	@Test
+	public void givenDataShouldReturnCricketerWithZeroHundredsAndZeroFiftiesAndWithBestAverages() {
+		try {
+			IPLAnalyser iplAnalyser = new IPLAnalyser();
+			iplAnalyser.loadIPL2019FactsheetMostRuns(IPL2019_FACTSHEET_MOSTRUNSCSVPATH);
+			String sortedIPLData = iplAnalyser.getTopBatsmenAverages();
+			IPL2019FactsheetMostRunsCSV[] iplMostRuns = new Gson().fromJson(sortedIPLData,
+					IPL2019FactsheetMostRunsCSV[].class);
+			String sortedIPLData2 = iplAnalyser.getCricketerWithZeroHundredsAndZeroFifties();
+			IPL2019FactsheetMostRunsCSV[] iplMostRuns2 = new Gson().fromJson(sortedIPLData2,
+					IPL2019FactsheetMostRunsCSV[].class);
+			String sortedIplData = iplAnalyser.getCricketerWithZeroHundredsAndZeroFiftiesAndWithBestAverages(iplMostRuns, iplMostRuns2);
+			System.out.println(sortedIplData);
+			Assert.assertEquals("Marcus Stoinis", sortedIplData);
 		} catch (IPLAnalysisException e) {
 			e.printStackTrace();
 		}
