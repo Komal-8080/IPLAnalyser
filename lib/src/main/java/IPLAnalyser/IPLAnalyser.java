@@ -317,4 +317,21 @@ public class IPLAnalyser {
 		return null;
 	}
 
+	public String getCricketerWithMaximumHundredsAndBestAverages() throws IPLAnalysisException {
+		try (Writer writer = new FileWriter("./src/test/resources/IPLMaximumHundredsAndBestAverages.json")) {
+			if (runsCSVList == null || runsCSVList.size() == 0) {
+				throw new IPLAnalysisException("No data", IPLAnalysisException.ExceptionType.NO_DATA);
+			}
+			Comparator<IPL2019FactsheetMostRunsCSV> iplComparator = Comparator
+					.comparing(IPL2019FactsheetMostRunsCSV::getHundreds).thenComparing(census -> census.avg);
+			this.SortForMostRuns(iplComparator);
+			String json = new Gson().toJson(runsCSVList);
+			Gson gson = new GsonBuilder().create();
+			gson.toJson(runsCSVList, writer);
+			return json;
+		} catch (RuntimeException | IOException e) {
+			throw new IPLAnalysisException(e.getMessage(), IPLAnalysisException.ExceptionType.FILE_OR_HEADER_PROBLEM);
+		}
+	}
+
 }
